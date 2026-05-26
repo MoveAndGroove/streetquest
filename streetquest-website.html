@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Street Quest — Urban Explorer</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #00c853;
+    --blue: #2244ee;
+    --cream: #eeecea;
+    --dark: #111110;
+    --muted: #888;
+    --border: rgba(0,0,0,0.08);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--dark);
+    overflow-x: hidden;
+  }
+
+  /* Grid background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: 
+      linear-gradient(rgba(0,0,0,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 48px;
+    background: rgba(238,236,234,0.9);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 2px;
+    background: linear-gradient(135deg, var(--green), var(--blue));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    align-items: center;
+    list-style: none;
+  }
+
+  .nav-links a {
+    text-decoration: none;
+    color: var(--dark);
+    font-size: 14px;
+    font-weight: 500;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+  }
+
+  .nav-links a:hover { opacity: 1; }
+
+  .nav-cta {
+    background: var(--green) !important;
+    color: white !important;
+    opacity: 1 !important;
+    padding: 10px 24px;
+    border-radius: 4px;
+    font-weight: 700 !important;
+    letter-spacing: 0.5px;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 120px 48px 80px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-content {
+    max-width: 1100px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .hero-left {
+    animation: fadeUp 0.8s ease both;
+  }
+
+  .hero-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--green);
+    font-weight: 500;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .hero-tag::before {
+    content: '';
+    width: 24px;
+    height: 1px;
+    background: var(--green);
+  }
+
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(72px, 8vw, 110px);
+    line-height: 0.9;
+    letter-spacing: 2px;
+    margin-bottom: 32px;
+  }
+
+  .hero-title .line-green {
+    background: linear-gradient(135deg, #00e676, var(--green));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: block;
+    filter: drop-shadow(0 0 30px rgba(0,200,83,0.3));
+  }
+
+  .hero-title .line-blue {
+    background: linear-gradient(135deg, #4488ff, var(--blue));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: block;
+    filter: drop-shadow(0 0 30px rgba(34,68,238,0.3));
+  }
+
+  .hero-sub {
+    font-size: 18px;
+    line-height: 1.7;
+    color: #555;
+    margin-bottom: 48px;
+    max-width: 460px;
+  }
+
+  .hero-sub strong { color: var(--dark); font-weight: 600; }
+
+  .hero-buttons {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    background: var(--green);
+    color: white;
+    padding: 16px 36px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 8px 24px rgba(0,200,83,0.3);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(0,200,83,0.4);
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--dark);
+    padding: 16px 36px;
+    border: 1.5px solid rgba(0,0,0,0.15);
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--dark);
+    background: rgba(0,0,0,0.03);
+  }
+
+  /* Phone mockup */
+  .hero-right {
+    display: flex;
+    justify-content: center;
+    animation: fadeUp 0.8s 0.2s ease both;
+  }
+
+  .phone-mockup {
+    width: 280px;
+    height: 560px;
+    background: var(--dark);
+    border-radius: 40px;
+    border: 8px solid #222;
+    position: relative;
+    box-shadow: 
+      0 40px 80px rgba(0,0,0,0.3),
+      0 0 0 1px rgba(255,255,255,0.05),
+      inset 0 0 0 1px rgba(255,255,255,0.1);
+    overflow: hidden;
+  }
+
+  .phone-screen {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(160deg, #0a1628, #0d2240);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 32px 24px;
+  }
+
+  .phone-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 52px;
+    line-height: 0.9;
+    text-align: left;
+    width: 100%;
+  }
+
+  .phone-logo .sq { color: var(--green); text-shadow: 0 0 20px rgba(0,200,83,0.5); }
+  .phone-logo .quest { color: #4488ff; text-shadow: 0 0 20px rgba(68,136,255,0.5); }
+
+  .phone-tagline {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: #555;
+    width: 100%;
+    text-align: left;
+    text-transform: uppercase;
+  }
+
+  .phone-map {
+    width: 100%;
+    flex: 1;
+    background: #0f1f3a;
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .map-grid {
+    position: absolute;
+    inset: 0;
+    background-image: 
+      linear-gradient(rgba(0,200,83,0.1) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,200,83,0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+
+  .map-dot {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 10px rgba(0,200,83,0.8);
+    animation: pulse 2s infinite;
+  }
+
+  .map-dot:nth-child(2) { top: 40%; left: 50%; background: #4488ff; animation-delay: 0.5s; }
+  .map-dot:nth-child(3) { top: 60%; left: 30%; background: #ff6b35; animation-delay: 1s; }
+  .map-dot:nth-child(4) { top: 25%; left: 70%; background: var(--green); animation-delay: 1.5s; }
+  .map-dot:nth-child(5) { top: 70%; left: 65%; background: #4488ff; animation-delay: 0.3s; }
+
+  .phone-stats {
+    width: 100%;
+    display: flex;
+    gap: 8px;
+  }
+
+  .phone-stat {
+    flex: 1;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    padding: 8px;
+    text-align: center;
+  }
+
+  .phone-stat-val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    color: var(--green);
+  }
+
+  .phone-stat-label {
+    font-size: 7px;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* STATS BAR */
+  .stats-bar {
+    position: relative;
+    z-index: 1;
+    background: var(--dark);
+    padding: 48px;
+    display: flex;
+    justify-content: center;
+    gap: 80px;
+  }
+
+  .stat-item { text-align: center; }
+
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 56px;
+    color: var(--green);
+    line-height: 1;
+    filter: drop-shadow(0 0 20px rgba(0,200,83,0.4));
+  }
+
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #999;
+    margin-top: 8px;
+  }
+
+  /* FEATURES */
+  .features {
+    position: relative;
+    z-index: 1;
+    padding: 120px 48px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-tag::before {
+    content: '';
+    width: 24px;
+    height: 1px;
+    background: var(--green);
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 5vw, 72px);
+    line-height: 0.95;
+    margin-bottom: 80px;
+    letter-spacing: 1px;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .feature-card {
+    background: var(--cream);
+    padding: 40px 32px;
+    transition: background 0.3s;
+  }
+
+  .feature-card:hover { background: white; }
+
+  .feature-icon {
+    font-size: 36px;
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  .feature-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+  }
+
+  .feature-desc {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #666;
+  }
+
+  /* HOW IT WORKS */
+  .how {
+    position: relative;
+    z-index: 1;
+    background: var(--dark);
+    padding: 120px 48px;
+    color: white;
+  }
+
+  .how-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .how .section-tag { color: var(--green); }
+  .how .section-title { color: white; }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px;
+    margin-top: 60px;
+  }
+
+  .step-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 72px;
+    color: var(--green);
+    line-height: 1;
+    margin-bottom: -20px;
+    opacity: 0.5;
+  }
+
+  .step-icon { font-size: 32px; margin-bottom: 16px; display: block; }
+
+  .step-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    color: rgba(255,255,255,0.7);
+  }
+
+  .step-desc { font-size: 13px; line-height: 1.7; color: #555; }
+
+  /* CITY FACTS */
+  .cities {
+    position: relative;
+    z-index: 1;
+    padding: 120px 48px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .cities-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-top: 60px;
+  }
+
+  .city-card {
+    border: 1px solid var(--border);
+    padding: 28px 24px;
+    border-radius: 4px;
+    transition: border-color 0.2s, transform 0.2s;
+    cursor: default;
+  }
+
+  .city-card:hover {
+    border-color: var(--green);
+    transform: translateY(-4px);
+  }
+
+  .city-emoji { font-size: 28px; margin-bottom: 12px; display: block; }
+  .city-name { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 1px; margin-bottom: 4px; }
+  .city-count { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--green); letter-spacing: 1px; }
+
+  /* CTA */
+  .cta {
+    position: relative;
+    z-index: 1;
+    background: var(--dark);
+    padding: 120px 48px;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .cta::before {
+    content: 'STREET QUEST';
+    position: absolute;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 200px;
+    color: rgba(255,255,255,0.02);
+    letter-spacing: 10px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+  }
+
+  .cta-tag { color: var(--green); justify-content: center; margin-bottom: 24px; }
+
+  .cta h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 6vw, 80px);
+    color: white;
+    letter-spacing: 2px;
+    line-height: 1;
+    margin-bottom: 24px;
+  }
+
+  .cta p {
+    font-size: 16px;
+    color: #666;
+    max-width: 480px;
+    margin: 0 auto 48px;
+    line-height: 1.7;
+  }
+
+  /* FOOTER */
+  footer {
+    position: relative;
+    z-index: 1;
+    background: #0a0a0a;
+    padding: 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    letter-spacing: 2px;
+    background: linear-gradient(135deg, var(--green), var(--blue));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .footer-links a {
+    font-size: 12px;
+    color: #444;
+    text-decoration: none;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--green); }
+
+  .footer-copy {
+    font-size: 11px;
+    color: #333;
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.4); opacity: 0.7; }
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav { padding: 16px 24px; }
+    .nav-links { display: none; }
+    .hero { padding: 100px 24px 60px; }
+    .hero-content { grid-template-columns: 1fr; gap: 48px; }
+    .hero-right { display: none; }
+    .stats-bar { padding: 48px 24px; gap: 40px; flex-wrap: wrap; }
+    .features { padding: 80px 24px; }
+    .features-grid { grid-template-columns: 1fr; }
+    .how { padding: 80px 24px; }
+    .steps { grid-template-columns: 1fr 1fr; gap: 32px; }
+    .cities { padding: 80px 24px; }
+    .cities-grid { grid-template-columns: 1fr 1fr; }
+    .cta { padding: 80px 24px; }
+    footer { padding: 32px 24px; flex-direction: column; gap: 24px; text-align: center; }
+    .footer-links { flex-wrap: wrap; justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Street Quest</div>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#cities">Cities</a></li>
+    <li><a href="#download" class="nav-cta">Download App</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-left">
+      <div class="hero-tag">Urban Explorer App</div>
+      <h1 class="hero-title">
+        <span class="line-green">STREET</span>
+        <span class="line-blue">QUEST</span>
+      </h1>
+      <p class="hero-sub">
+        Your neighborhood is a <strong>game board.</strong> Every block a discovery. Every walk an adventure. Turn your city into a playground.
+      </p>
+      <div class="hero-buttons">
+        <a href="#download" class="btn-primary">▶ &nbsp;Download Free</a>
+        <a href="#how" class="btn-secondary">How it works →</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="phone-mockup">
+        <div class="phone-screen">
+          <div class="phone-logo">
+            <div class="sq">STREET</div>
+            <div class="quest">QUEST</div>
+          </div>
+          <div class="phone-tagline">Urban Explorer</div>
+          <div class="phone-map">
+            <div class="map-grid"></div>
+            <div class="map-dot" style="top:35%;left:45%"></div>
+            <div class="map-dot" style="top:55%;left:60%"></div>
+            <div class="map-dot" style="top:25%;left:25%"></div>
+            <div class="map-dot" style="top:65%;left:35%"></div>
+            <div class="map-dot" style="top:45%;left:75%"></div>
+          </div>
+          <div class="phone-stats">
+            <div class="phone-stat">
+              <div class="phone-stat-val">23</div>
+              <div class="phone-stat-label">Streets</div>
+            </div>
+            <div class="phone-stat">
+              <div class="phone-stat-val">8</div>
+              <div class="phone-stat-label">Art</div>
+            </div>
+            <div class="phone-stat">
+              <div class="phone-stat-val">5</div>
+              <div class="phone-stat-label">Spots</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <div class="stat-num">14</div>
+    <div class="stat-label">Cities</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">71</div>
+    <div class="stat-label">Curated Routes</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">50+</div>
+    <div class="stat-label">Daily Quests</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">10</div>
+    <div class="stat-label">Explorer Levels</div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="section-tag">What You Get</div>
+  <h2 class="section-title">EVERYTHING YOUR<br>CITY HAS TO OFFER</h2>
+  <div class="features-grid">
+    <div class="feature-card">
+      <span class="feature-icon">🗺️</span>
+      <div class="feature-title">Live Map Explorer</div>
+      <p class="feature-desc">Real-time GPS tracking draws your route as you walk. Discover nearby art, parks, restaurants and hidden spots — all on a live map.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🛣️</span>
+      <div class="feature-title">City Routes</div>
+      <p class="feature-desc">71 curated walking routes across 14 cities — from Brooklyn Bridge to Beacon Hill. Each route has real waypoints, highlights, and insider notes.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🎰</span>
+      <div class="feature-title">Restaurant Roulette</div>
+      <p class="feature-desc">Not sure where to go for date night? Spin the wheel to find a real nearby restaurant rated by locals! No more "I don't know, where do you want to go?"</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">⚔️</span>
+      <div class="feature-title">Territory Wars</div>
+      <p class="feature-desc">Your explorer type is your team. Walk blocks to claim territory for Navigators, Wanderers, Detectives or Collectors. Resets every Monday. Coming soon.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🔥</span>
+      <div class="feature-title">Daily Streak</div>
+      <p class="feature-desc">Walk a quarter mile every day to keep your streak alive. Miss a day and start over. Simple. Addictive. Effective.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">⚡</span>
+      <div class="feature-title">Daily Side Quests</div>
+      <p class="feature-desc">Three new quests every day — from mystery spots with cryptic clues to timed distance challenges. Complete them to earn XP. Resets at midnight.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🕵️</span>
+      <div class="feature-title">Mystery Spots</div>
+      <p class="feature-desc">Hidden courtyards, forgotten staircases, secret gardens. Every city has places most people walk past every day. Street Quest helps you find them.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">💡</span>
+      <div class="feature-title">Local Facts</div>
+      <p class="feature-desc">Hyper-local trivia about your city automatically detected by GPS. Philadelphia? Liberty Bell facts. Boston? Revolution history. Wherever you are.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="how">
+  <div class="how-inner">
+    <div class="section-tag">Simple by Design</div>
+    <h2 class="section-title">HOW IT WORKS</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <span class="step-icon">📍</span>
+        <div class="step-title">Open the App</div>
+        <p class="step-desc">Street Quest centers on your location and shows you what's nearby — restaurants, art, parks, hidden gems.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <span class="step-icon">🚶</span>
+        <div class="step-title">Start Walking</div>
+        <p class="step-desc">Hit Start Walk. Your GPS tracks your real route. Every new block you discover counts toward your stats.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <span class="step-icon">📍</span>
+        <div class="step-title">Check In</div>
+        <p class="step-desc">Find a mural? Check in. Try a new restaurant? Check in. Every check-in earns XP and builds your explorer profile.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <span class="step-icon">🏆</span>
+        <div class="step-title">Level Up</div>
+        <p class="step-desc">Earn XP, unlock achievements, keep your streak alive. Your city becomes a game — and you're the player.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CITIES -->
+<section class="cities" id="cities">
+  <div class="section-tag">Available Now · 14 Cities</div>
+  <h2 class="section-title">YOUR CITY.<br>YOUR GAME BOARD.</h2>
+  <div class="cities-grid">
+    <div class="city-card">
+      <span class="city-emoji">🏛️</span>
+      <div class="city-name">Philadelphia</div>
+      <div class="city-count">6 ROUTES · 5 QUESTS</div>
+    </div>
+    <div class="city-card">
+      <span class="city-emoji">🗽</span>
+      <div class="city-name">New York City</div>
+      <div class="city-count">5 ROUTES · 4 QUESTS</div>
+    </div>
+    <div class="city-card">
+      <span class="city-emoji">🦞</span>
+      <div class="city-name">Boston</div>
+      <div class="city-count">5 ROUTES · 3 QUESTS</div>
+    </div>
+    <div class="city-card">
+      <span class="city-emoji">🌉</span>
+      <div class="city-name">San Francisco</div>
+      <div class="city-count">5 ROUTES · 3 QUESTS</div>
+    </div>
+    <div class="city-card">
+      <span class="city-emoji">🏙️</span>
+      <div class="city-name">Chicago</div>
+      <div class="city-count">5 ROUTES · 3 QUESTS</div>
+    </div>
+    <div class="city-card">
+      <span class="city-emoji">🎸</span>
+      <div class="city-name">Nashville</div>
+      <div class="city-count">5 ROUTES · 3 QUESTS</div>
+    </div>
+    <div class="city-card">
+      <span class="city-emoji">🌴</span>
+      <div class="city-name">Los Angeles</div>
+      <div class="city-count">5 ROUTES · 3 QUESTS</div>
+    </div>
+    <div class="city-card">
+      <span class="city-emoji">🏛️</span>
+      <div class="city-name">Washington D.C.</div>
+      <div class="city-count">5 ROUTES · 3 QUESTS</div>
+    </div>
+  </div>
+  <p style="text-align:center;color:#888;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:2px;margin-top:32px;">+ DENVER · PORTLAND · NEW ORLEANS · MIAMI · SEATTLE · AUSTIN</p>
+</section>
+
+<!-- CTA -->
+<section class="cta" id="download">
+  <div class="section-tag cta-tag">Free to Download</div>
+  <h2>START YOUR FIRST<br>QUEST TODAY</h2>
+  <p>Stop scrolling. Start walking. Your city has been waiting for you to actually explore it.</p>
+  <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+    <a href="#" class="btn-primary" style="font-size:13px;">🍎 &nbsp;App Store — Coming Soon</a>
+    <a href="#" class="btn-secondary" style="color:white;border-color:rgba(255,255,255,0.15);font-size:13px;">🤖 &nbsp;Google Play — Coming Soon</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Street Quest</div>
+  <ul class="footer-links">
+    <li><a href="https://moveandgroove.github.io/streetquest/legal.html">Terms & Privacy</a></li>
+    <li><a href="mailto:hello@streetquestapp.com">Contact</a></li>
+  </ul>
+  <div class="footer-copy">© 2026 Move and Groove LLC</div>
+</footer>
+
+</body>
+</html>
