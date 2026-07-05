@@ -393,7 +393,12 @@
     height: 1px;
     background: var(--green);
   }
-
+.section-tag::after {
+    content: '';
+    width: 24px;
+    height: 1px;
+    background: var(--green);
+  }
 .section-title {
     font-family: 'Bebas Neue', sans-serif;
     font-size: clamp(48px, 5vw, 72px);
@@ -861,7 +866,7 @@
 <section class="cta" id="download">
   <div class="section-tag cta-tag">Free to Download</div>
   <h2>START YOUR FIRST<br>QUEST TODAY</h2>
-  <p>Stop scrolling. Start walking. Your city has been waiting for you to actually explore it.</p>
+ <p style="color:#fff;">Stop scrolling. Start walking. Your city has been waiting for you to explore it!</p>
   <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
     <a href="#" class="btn-primary" style="font-size:13px;">🍎 &nbsp;App Store — Coming Soon</a>
     <a href="#" class="btn-secondary" style="color:white;border-color:rgba(255,255,255,0.15);font-size:13px;">🤖 &nbsp;Google Play — Coming Soon</a>
