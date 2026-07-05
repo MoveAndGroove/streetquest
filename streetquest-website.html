@@ -374,7 +374,7 @@
     margin: 0 auto;
   }
 
-  .section-tag {
+.section-tag {
     font-family: 'DM Mono', monospace;
     font-size: 11px;
     letter-spacing: 3px;
@@ -383,6 +383,7 @@
     margin-bottom: 16px;
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 8px;
   }
 
@@ -393,12 +394,13 @@
     background: var(--green);
   }
 
-  .section-title {
+.section-title {
     font-family: 'Bebas Neue', sans-serif;
     font-size: clamp(48px, 5vw, 72px);
     line-height: 0.95;
     margin-bottom: 80px;
     letter-spacing: 1px;
+    text-align: center;
   }
 
   .features-grid {
@@ -479,7 +481,7 @@
     color: rgba(255,255,255,0.7);
   }
 
-  .step-desc { font-size: 13px; line-height: 1.7; color: #555; }
+  .step-desc { font-size: 13px; line-height: 1.7; color: #fff; }
 
   /* CITY FACTS */
   .cities {
@@ -726,27 +728,32 @@
     <div class="feature-card">
       <span class="feature-icon">🗺️</span>
       <div class="feature-title">Live Map Explorer</div>
-      <p class="feature-desc">Real-time GPS tracking draws your route as you walk. Discover nearby art, parks, restaurants and hidden spots — all on a live map.</p>
-    </div>
-    <div class="feature-card">
-      <span class="feature-icon">🛣️</span>
-      <div class="feature-title">City Routes</div>
-      <p class="feature-desc">71 curated walking routes across 14 cities — from Brooklyn Bridge to Beacon Hill. Each route has real waypoints, highlights, and insider notes.</p>
+      <p class="feature-desc">Wherever you are, discover nearby art, parks, restaurants, and hidden spots in real time as you explore.</p>
     </div>
     <div class="feature-card">
       <span class="feature-icon">🎰</span>
       <div class="feature-title">Restaurant Roulette</div>
-      <p class="feature-desc">Not sure where to go for date night? Spin the wheel to find a real nearby restaurant rated by locals! No more "I don't know, where do you want to go?"</p>
+      <p class="feature-desc">Not sure where to go for date night? Spin the wheel to find a real nearby restaurant rated by locals!</p>
     </div>
     <div class="feature-card">
-      <span class="feature-icon">⚔️</span>
-      <div class="feature-title">Territory Wars</div>
-      <p class="feature-desc">Your explorer type is your team. Walk blocks to claim territory for Navigators, Wanderers, Detectives or Collectors. Resets every Monday. Coming soon.</p>
+      <span class="feature-icon">📍</span>
+      <div class="feature-title">Memory Map</div>
+      <p class="feature-desc">Every place you check into becomes a photo pin on your memory map. Zoom out and see your entire city story — every neighborhood you've explored, every meal you enjoyed, one spot at a time.</p>
+    </div>
+<div class="feature-card">
+      <span class="feature-icon">🏆</span>
+      <div class="feature-title">Friends & Leaderboard</div>
+      <p class="feature-desc">Invite friends and see what new spots they’re discovering. Every city has its own leaderboard. Climb the ranks as you check in, walk, and explore together.</p>
+    </div>
+     <div class="feature-card">
+      <span class="feature-icon">🛣️</span>
+      <div class="feature-title">City Routes</div>
+      <p class="feature-desc">71 curated routes across 14 cities—from the Brooklyn Bridge to Beacon Hill. Each one packed with real highlights and insider tips.</p>
     </div>
     <div class="feature-card">
       <span class="feature-icon">🔥</span>
       <div class="feature-title">Daily Streak</div>
-      <p class="feature-desc">Walk a quarter mile every day to keep your streak alive. Miss a day and start over. Simple. Addictive. Effective.</p>
+      <p class="feature-desc">Keep your streak alive, just a quarter mile a day. One short walk is all it takes! </p>
     </div>
     <div class="feature-card">
       <span class="feature-icon">⚡</span>
@@ -756,12 +763,12 @@
     <div class="feature-card">
       <span class="feature-icon">🕵️</span>
       <div class="feature-title">Mystery Spots</div>
-      <p class="feature-desc">Hidden courtyards, forgotten staircases, secret gardens. Every city has places most people walk past every day. Street Quest helps you find them.</p>
+      <p class="feature-desc">Hidden gems, secret gardens, and places hiding in plain sight. Every city has places most people walk past every day. Street Quest helps you find them.</p>
     </div>
     <div class="feature-card">
       <span class="feature-icon">💡</span>
       <div class="feature-title">Local Facts</div>
-      <p class="feature-desc">Hyper-local trivia about your city automatically detected by GPS. Philadelphia? Liberty Bell facts. Boston? Revolution history. Wherever you are.</p>
+      <p class="feature-desc">Local trivia about your city automatically detected by GPS. Philadelphia? Liberty Bell facts. Boston? Revolution history. Wherever you are, learn with Street Quest!</p>
     </div>
   </div>
 </section>
@@ -794,7 +801,7 @@
         <div class="step-num">04</div>
         <span class="step-icon">🏆</span>
         <div class="step-title">Level Up</div>
-        <p class="step-desc">Earn XP, unlock achievements, keep your streak alive. Your city becomes a game — and you're the player.</p>
+        <p class="step-desc">Earn XP, unlock achievements, and build your streak. Your city is meant to be explored!</p>
       </div>
     </div>
   </div>
@@ -802,9 +809,10 @@
 
 <!-- CITIES -->
 <section class="cities" id="cities">
-  <div class="section-tag">Available Now · 14 Cities</div>
-  <h2 class="section-title">YOUR CITY.<br>YOUR GAME BOARD.</h2>
-  <div class="cities-grid">
+<div class="section-tag" style="text-align:center;">Works Anywhere</div>
+  <h2 class="section-title" style="text-align:center;">YOUR CITY.<br>YOUR GAME BOARD.</h2>
+<p style="text-align:center; max-width:640px; margin:0 auto 40px; font-size:16px; line-height:1.6; color:#555;">Street Quest works in <strong>any city</strong> — live GPS tracking, Memory Map check-ins, and Restaurant Roulette go wherever you do. These 14 cities also have hand-curated walking routes.</p>
+<div class="cities-grid">
     <div class="city-card">
       <span class="city-emoji">🏛️</span>
       <div class="city-name">Philadelphia</div>
